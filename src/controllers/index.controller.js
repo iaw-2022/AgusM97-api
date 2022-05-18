@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { Pool } = require("pg");
+const bcrypt = require("bcrypt");
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -29,8 +30,24 @@ const getUserById = async (req, res) => {
   res.json(response.rows);
 };
 
+const createUser = async (req, res) => {
+  const { username, email } = req.body;
+  const password = await bcrypt.hash(req.body.password, 10);
+  const response = await pool.query(
+    "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)",
+    [username, password, email]
+  );
+  res.json({
+    message: "User Added Succefully",
+    body: {
+      user: { username, email, password },
+    },
+  });
+};
+
 module.exports = {
   getUsers,
   getUsersCompact,
   getUserById,
+  createUser,
 };
