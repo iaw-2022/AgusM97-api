@@ -53,7 +53,7 @@ const createUser = async (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = await bcrypt.hash(req.body.password, 10);
-  const created_at = +new Date();
+  const created_at = new Date();
   const response = await pool.query(
     "INSERT INTO users (username, password, email, created_at) VALUES ($1, $2, $3, $4)",
     [username, password, email, created_at]
