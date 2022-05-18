@@ -9,6 +9,7 @@ const pool = new Pool({
   },
 });
 
+//---USER---
 const getUsers = async (req, res) => {
   const response = await pool.query(
     "SELECT id, username, email, picture, bio, created_at FROM users"
@@ -21,22 +22,41 @@ const getUsersCompact = async (req, res) => {
   res.json(response.rows);
 };
 
+const getUserByUsername = async (req, res) => {
+  const username = req.params.username;
+  const response = await pool.query(
+    "SELECT id, username, email, picture, bio, created_at FROM users WHERE username = $1",
+    [username]
+  );
+  res.json(response.rows[0]);
+};
+
 const getUserById = async (req, res) => {
   const id = req.params.id;
   const response = await pool.query(
     "SELECT id, username, email, picture, bio, created_at FROM users WHERE id = $1",
     [id]
   );
-  res.json(response.rows);
+  res.json(response.rows[0]);
+};
+
+const getUserByEmail = async (req, res) => {
+  const email = req.params.email;
+  const response = await pool.query(
+    "SELECT id, username, email, picture, bio, created_at FROM users WHERE email = $1",
+    [email]
+  );
+  res.json(response.rows[0]);
 };
 
 const createUser = async (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = await bcrypt.hash(req.body.password, 10);
+  const created_at = +new Date();
   const response = await pool.query(
-    "INSERT INTO users (username, password, email) VALUES ($1, $2, $3)",
-    [username, password, email]
+    "INSERT INTO users (username, password, email, created_at) VALUES ($1, $2, $3, $4)",
+    [username, password, email, created_at]
   );
   res.json({
     message: "User Added Succefully",
@@ -46,9 +66,62 @@ const createUser = async (req, res) => {
   });
 };
 
+//---IMAGE---
+const getImages = async (req, res) => {
+  const response = await pool.query("SELECT * FROM images");
+  res.json(response.rows);
+};
+
+const getImagesCompact = async (req, res) => {
+  const response = await pool.query(
+    "SELECT id, user_id, description FROM images"
+  );
+  res.json(response.rows);
+};
+
+const getImageById = async (req, res) => {
+  const id = req.params.id;
+  const response = await pool.query("SELECT * FROM images WHERE id = $1", [id]);
+  res.json(response.rows[0]);
+};
+
+const getImagesByUserId = async (req, res) => {
+  const id = req.params.id;
+  const response = await pool.query("SELECT * FROM images WHERE user_id = $1", [
+    id,
+  ]);
+  res.json(response.rows);
+};
+
+const getImagesByUsername = async (req, res) => {
+  const username = req.params.username;
+  const response = await pool.query(
+    "SELECT images.id, user_id, file, description, images.created_at FROM images JOIN users ON images.user_id = users.id  WHERE username = $1",
+    [username]
+  );
+  res.json(response.rows);
+};
+
+const getImagesByEmail = async (req, res) => {
+  const email = req.params.email;
+  const response = await pool.query(
+    "SELECT images.id, user_id, file, description, images.created_at FROM images JOIN users ON images.user_id = users.id  WHERE email = $1",
+    [email]
+  );
+  res.json(response.rows);
+};
+
 module.exports = {
   getUsers,
   getUsersCompact,
   getUserById,
+  getUserByUsername,
+  getUserByEmail,
   createUser,
+  getImages,
+  getImagesCompact,
+  getImageById,
+  getImagesByUserId,
+  getImagesByUsername,
+  getImagesByEmail,
 };
