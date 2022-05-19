@@ -66,6 +66,12 @@ const createUser = async (req, res) => {
   });
 };
 
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  const response = await pool.query("DELETE FROM users WHERE id = $1", [id]);
+  res.json(`User ${id} Deleted Succesfully`);
+};
+
 //---IMAGE---
 const getImages = async (req, res) => {
   const response = await pool.query("SELECT * FROM images");
@@ -82,6 +88,15 @@ const getImagesCompact = async (req, res) => {
 const getImageById = async (req, res) => {
   const id = req.params.id;
   const response = await pool.query("SELECT * FROM images WHERE id = $1", [id]);
+  res.json(response.rows[0]);
+};
+
+const getImageTags = async (req, res) => {
+  const id = req.params.id;
+  const response = await pool.query(
+    "SELECT tags.id, name FROM image_tag JOIN tags ON tag_id = tags.id WHERE image_id = $1",
+    [id]
+  );
   res.json(response.rows[0]);
 };
 
@@ -118,9 +133,11 @@ module.exports = {
   getUserByUsername,
   getUserByEmail,
   createUser,
+  deleteUser,
   getImages,
   getImagesCompact,
   getImageById,
+  getImageTags,
   getImagesByUserId,
   getImagesByUsername,
   getImagesByEmail,
