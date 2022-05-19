@@ -51,9 +51,6 @@ const updateUserBio = async (req, res) => {
   );
   res.json({
     message: "User Bio Updated Succefully",
-    body: {
-      user: { username, email, password },
-    },
   });
 };
 
@@ -66,10 +63,7 @@ const updateUserPicture = async (req, res) => {
     [picture, now, id]
   );
   res.json({
-    message: "User Added Succefully",
-    body: {
-      user: { username, email, password },
-    },
+    message: "User Picture Updated Succefully",
   });
 };
 
