@@ -44,10 +44,27 @@ const getUserByEmail = async (req, res) => {
 const updateUserBio = async (req, res) => {
   const id = req.params.id;
   const bio = req.body.bio;
-  const response = await pool.query("UPDATE users SET bio = $1 WHERE id = $2", [
-    bio,
-    id,
-  ]);
+  const now = new Date();
+  const response = await pool.query(
+    "UPDATE users SET bio = $1, updated_at = $2 WHERE id = $3",
+    [bio, now, id]
+  );
+  res.json({
+    message: "User Bio Updated Succefully",
+    body: {
+      user: { username, email, password },
+    },
+  });
+};
+
+const updateUserPicture = async (req, res) => {
+  const id = req.params.id;
+  const picture = req.body.picture;
+  const now = new Date();
+  const response = await pool.query(
+    "UPDATE users SET picture = $1, updated_at = $2 WHERE id = $3",
+    [picture, now, id]
+  );
   res.json({
     message: "User Added Succefully",
     body: {
@@ -86,6 +103,7 @@ module.exports = {
   getUserByUsername,
   getUserByEmail,
   updateUserBio,
+  updateUserPicture,
   createUser,
   deleteUser,
 };
