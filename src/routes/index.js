@@ -9,7 +9,7 @@ router.get("/user/:username", controller.getUserByUsername);
 router.get("/user/id/:id", controller.getUserById);
 router.get("/user/email/:email", controller.getUserByEmail);
 router.post("/user.new", controller.createUser);
-router.delete("/id/:id", controller.deleteUser);
+router.delete("/user/id/:id", controller.deleteUser);
 
 router.get("/images", controller.getImages);
 router.get("/images.compact", controller.getImagesCompact);
