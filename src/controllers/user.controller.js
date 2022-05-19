@@ -85,9 +85,11 @@ const createUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const id = req.params.id;
-  const response = await pool.query("DELETE FROM users WHERE id = $1", [id]);
-  res.json(`User ${id} Deleted Succesfully`);
+  const username = req.params.username;
+  const response = await pool.query("DELETE FROM users WHERE username = $1", [
+    username,
+  ]);
+  res.json(`User ${username} Deleted Succesfully`);
 };
 
 module.exports = {

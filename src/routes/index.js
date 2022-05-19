@@ -12,7 +12,7 @@ router.get("/user/email/:email", userController.getUserByEmail);
 router.patch("/user/:username/bio", userController.updateUserBio);
 router.patch("/user/:username/picture", userController.updateUserBio);
 router.post("/user.new", userController.createUser);
-router.delete("/user/id/:id", userController.deleteUser);
+router.delete("/user/:username", userController.deleteUser);
 
 router.get("/images", imageController.getImages);
 router.get("/images.compact", imageController.getImagesCompact);
