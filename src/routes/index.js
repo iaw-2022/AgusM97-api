@@ -9,8 +9,8 @@ router.get("/users.compact", userController.getUsersCompact);
 router.get("/user/:username", userController.getUserByUsername);
 router.get("/user/id/:id", userController.getUserById);
 router.get("/user/email/:email", userController.getUserByEmail);
-router.patch("/user.bio", userController.updateUserBio);
-router.patch("/user.picture", userController.updateUserBio);
+router.patch("/user/:username.bio", userController.updateUserBio);
+router.patch("/user/:username.picture", userController.updateUserBio);
 router.post("/user.new", userController.createUser);
 router.delete("/user/id/:id", userController.deleteUser);
 

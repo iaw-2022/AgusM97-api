@@ -42,12 +42,12 @@ const getUserByEmail = async (req, res) => {
 };
 
 const updateUserBio = async (req, res) => {
-  const id = req.params.id;
+  const username = req.params.username;
   const bio = req.body.bio;
   const now = new Date();
   const response = await pool.query(
-    "UPDATE users SET bio = $1, updated_at = $2 WHERE id = $3",
-    [bio, now, id]
+    "UPDATE users SET bio = $1, updated_at = $2 WHERE username = $3",
+    [bio, now, username]
   );
   res.json({
     message: "User Bio Updated Succefully",
@@ -55,12 +55,12 @@ const updateUserBio = async (req, res) => {
 };
 
 const updateUserPicture = async (req, res) => {
-  const id = req.params.id;
+  const username = req.params.username;
   const picture = req.body.picture;
   const now = new Date();
   const response = await pool.query(
-    "UPDATE users SET picture = $1, updated_at = $2 WHERE id = $3",
-    [picture, now, id]
+    "UPDATE users SET picture = $1, updated_at = $2 WHERE username = $3",
+    [picture, now, username]
   );
   res.json({
     message: "User Picture Updated Succefully",
