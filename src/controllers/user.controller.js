@@ -1,6 +1,7 @@
 require("dotenv").config();
 const pool = require("./pgpool");
 const bcrypt = require("bcrypt");
+const req = require("express/lib/request");
 
 const getUsers = async (req, res) => {
   const response = await pool.query(
@@ -84,27 +85,6 @@ const createUser = async (req, res) => {
   const password = await bcrypt.hash(req.body.password, 10);
   const now = new Date();
 
-  const response1 = await pool.query(
-    "SELECT * FROM users WHERE username = $1",
-    [username]
-  );
-  if (response1.rows.length != 0)
-    res.status(409).send("This username is already taken");
-
-  const response2 = await pool.query("SELECT * FROM users WHERE email = $1", [
-    email,
-  ]);
-  if (response2.rows.length != 0)
-    res
-      .status(409)
-      .send("There is already an account using this email address");
-
-  const response3 = await pool.query("SELECT password FROM users");
-  response3.rows.forEach((row) => {
-    if (bcrypt.compareSync(req.body.password, row.password))
-      res.status(409).send("This password is already taken");
-  });
-
   await pool.query(
     "INSERT INTO users (username, password, email, created_at, updated_at) VALUES ($1, $2, $3, $4, $4)",
     [username, password, email, now]
@@ -127,6 +107,37 @@ const deleteUser = async (req, res) => {
   res.json(`User ${username} Deleted Succesfully`);
 };
 
+const usernameTaken = async (req, res, next) => {
+  const username = req.body.username;
+  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
+    username,
+  ]);
+  if (response.rows.length != 0)
+    res.status(409).send("This username is already taken");
+  else next();
+};
+
+const emailTaken = async (req, res, next) => {
+  const email = req.body.email;
+  const response = await pool.query("SELECT * FROM users WHERE email = $1", [
+    email,
+  ]);
+  if (response.rows.length != 0)
+    res
+      .status(409)
+      .send("There is already an account using this email address");
+  else next();
+};
+
+const passwordTaken = async (req, res, next) => {
+  const response = await pool.query("SELECT password FROM users");
+  response.rows.forEach((row) => {
+    if (bcrypt.compareSync(req.body.password, row.password))
+      res.status(409).send("This password is already taken");
+  });
+  next();
+};
+
 module.exports = {
   getUsers,
   getUsersCompact,
@@ -137,4 +148,7 @@ module.exports = {
   updateUserPicture,
   createUser,
   deleteUser,
+  usernameTaken,
+  emailTaken,
+  passwordTaken,
 };
