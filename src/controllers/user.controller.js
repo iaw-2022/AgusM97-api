@@ -101,7 +101,8 @@ const createUser = async (req, res) => {
 
   const response3 = await pool.query("SELECT password FROM users");
   response3.rows.forEach((row) => {
-    if (await bcrypt.compare(req.body.password, row.password))
+    let exist = await bcrypt.compare(req.body.password, row.password);
+    if (exist)
       res.status(409).send("This password is already taken");
   });
 
