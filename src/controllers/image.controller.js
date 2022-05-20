@@ -26,7 +26,7 @@ const getImageTags = async (req, res) => {
     "SELECT tags.id, name FROM image_tag JOIN tags ON tag_id = tags.id WHERE image_id = $1",
     [id]
   );
-  res.json(response.rows[0]);
+  res.json(response.rows);
 };
 
 const getImagesByUserId = async (req, res) => {
@@ -76,6 +76,42 @@ const updateImageDescription = async (req, res) => {
   });
 };
 
+const addTagToImage = async (req, res) => {
+  const image_id = req.params.image_id;
+  const tag_id = req.body.tag_id;
+  const response = await pool.query(
+    "SELECT * FROM image_tag WHERE image_id = $1 AND tag_id = $2",
+    [image_id, tag_id]
+  );
+  if (response.rows.length != 0)
+    res.status(409).send("Image/Tag relationship already exists");
+  await pool.query("INSERT INTO image_tag (image_id, tag_id) VALUES ($1, $2)", [
+    image_id,
+    tag_id,
+  ]);
+  res.json({
+    message: "Tag Added To Image Succefully",
+  });
+};
+
+const removeTagFromImage = async (req, res) => {
+  const image_id = req.params.image_id;
+  const tag_id = req.body.tag_id;
+  const response = await pool.query(
+    "SELECT * FROM image_tag WHERE image_id = $1 AND tag_id = $2",
+    [image_id, tag_id]
+  );
+  if (response.rows.length == 0)
+    res.status(404).send("Image/Tag relationship doesn't exists");
+  await pool.query(
+    "DELETE FROM image_tag WHERE image_id = $1 AND tag_id = $2",
+    [image_id, tag_id]
+  );
+  res.json({
+    message: "Tag Removed From Image Succefully",
+  });
+};
+
 const uploadImage = async (req, res) => {
   const file = req.body.file;
   const description = req.body.description;
@@ -91,6 +127,17 @@ const uploadImage = async (req, res) => {
   });
 };
 
+//--MIDDLEWARE--
+const imageExists = async (req, res, next) => {
+  const image_id = req.params.image_id;
+  const response = await pool.query("SELECT * FROM images WHERE id = $1", [
+    image_id,
+  ]);
+  if (response.rows.length == 0)
+    res.status(404).send("This image doesn't exists");
+  else next();
+};
+
 module.exports = {
   getImages,
   getImagesCompact,
@@ -100,5 +147,8 @@ module.exports = {
   getImagesByUsername,
   getImagesByEmail,
   updateImageDescription,
+  addTagToImage,
+  removeTagFromImage,
   uploadImage,
+  imageExists,
 };

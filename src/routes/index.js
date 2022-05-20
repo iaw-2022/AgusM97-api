@@ -11,6 +11,11 @@ router.get("/users.compact", userController.getUsersCompact);
 router.get("/user/:username", userController.getUserByUsername);
 router.get("/user/id/:id", userController.getUserById);
 router.get("/user/email/:email", userController.getUserByEmail);
+router.patch(
+  "/user/:username/email",
+  userController.emailTaken,
+  userController.updateUserEmail
+);
 router.patch("/user/:username/bio", userController.updateUserBio);
 router.patch("/user/:username/picture", userController.updateUserPicture);
 router.post(
@@ -36,6 +41,22 @@ router.get("/user/:username/images", imageController.getImagesByUsername);
 router.get("/user/id/:id/images", imageController.getImagesByUserId);
 router.get("/user/email/:email/images", imageController.getImagesByEmail);
 router.patch("/image/:id/description", imageController.updateImageDescription);
-router.post("/image.new", imageController.uploadImage);
+router.post(
+  "/image/:image_id/tags.add",
+  tagController.tagExists,
+  imageController.imageExists,
+  imageController.addTagToImage
+);
+router.delete(
+  "/image/:image_id/tags.remove",
+  tagController.tagExists,
+  imageController.imageExists,
+  imageController.removeTagFromImage
+);
+router.post(
+  "/image.new",
+  userController.userExists,
+  imageController.uploadImage
+);
 
 module.exports = router;
