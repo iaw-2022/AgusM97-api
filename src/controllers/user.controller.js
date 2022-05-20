@@ -101,7 +101,7 @@ const createUser = async (req, res) => {
 
   const response3 = await pool.query("SELECT password FROM users");
   response3.rows.forEach((row) => {
-    if (bcrypt.compare(req.body.password, row.password))
+    if (await bcrypt.compare(req.body.password, row.password))
       res.status(409).send("This password is already taken");
   });
 
@@ -119,7 +119,11 @@ const createUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   const username = req.params.username;
-  const response = await pool.query("DELETE FROM users WHERE username = $1", [
+  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
+    username,
+  ]);
+  if (response.rows.length == 0) res.status(404).send("User not found");
+  await pool.query("DELETE FROM users WHERE username = $1", [
     username,
   ]);
   res.json(`User ${username} Deleted Succesfully`);
