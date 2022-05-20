@@ -22,7 +22,7 @@ const getUserByUsername = async (req, res) => {
     [username]
   );
   if (response.rows.length == 0) res.status(404).send("User not found");
-  res.status(404).json(response.rows[0]);
+  res.json(response.rows[0]);
 };
 
 const getUserById = async (req, res) => {
@@ -108,6 +108,7 @@ const deleteUser = async (req, res) => {
 };
 
 //--MIDDLEWARE--
+
 const usernameTaken = async (req, res, next) => {
   const username = req.body.username;
   const response = await pool.query("SELECT * FROM users WHERE username = $1", [
