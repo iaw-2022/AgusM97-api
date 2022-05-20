@@ -135,7 +135,7 @@ const passwordTaken = async (req, res, next) => {
   response.rows.forEach((row) => {
     if (bcrypt.compareSync(req.body.password, row.password)) {
       res.status(409).send("This password is already taken");
-      return;
+      return next("Invalid password");
     }
   });
   next();
