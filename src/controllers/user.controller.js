@@ -107,6 +107,7 @@ const deleteUser = async (req, res) => {
   res.json(`User ${username} Deleted Succesfully`);
 };
 
+//--MIDDLEWARE--
 const usernameTaken = async (req, res, next) => {
   const username = req.body.username;
   const response = await pool.query("SELECT * FROM users WHERE username = $1", [
@@ -132,8 +133,10 @@ const emailTaken = async (req, res, next) => {
 const passwordTaken = async (req, res, next) => {
   const response = await pool.query("SELECT password FROM users");
   response.rows.forEach((row) => {
-    if (bcrypt.compareSync(req.body.password, row.password))
+    if (bcrypt.compareSync(req.body.password, row.password)) {
       res.status(409).send("This password is already taken");
+      return;
+    }
   });
   next();
 };
