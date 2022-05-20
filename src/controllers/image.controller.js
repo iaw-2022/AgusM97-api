@@ -16,6 +16,7 @@ const getImagesCompact = async (req, res) => {
 const getImageById = async (req, res) => {
   const id = req.params.id;
   const response = await pool.query("SELECT * FROM images WHERE id = $1", [id]);
+  if (response.rows.length == 0) res.status(404).send("User not found");
   res.json(response.rows[0]);
 };
 
