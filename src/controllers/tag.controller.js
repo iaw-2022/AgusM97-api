@@ -10,7 +10,7 @@ const getTagById = async (req, res) => {
   const id = req.params.id;
   const response = await pool.query("SELECT *  FROM tags WHERE id = $1", [id]);
   if (response.rows.length == 0) res.status(404).send("Tag not found");
-  res.json(response.rows[0]);
+  else res.json(response.rows[0]);
 };
 
 const getTagByName = async (req, res) => {
@@ -19,12 +19,12 @@ const getTagByName = async (req, res) => {
     name,
   ]);
   if (response.rows.length == 0) res.status(404).send("Tag not found");
-  res.json(response.rows[0]);
+  else res.json(response.rows[0]);
 };
 
 //--MIDDLEWARE--
 const tagExists = async (req, res, next) => {
-  const tag_id = req.body.tag_id;
+  const tag_id = req.params.tag_id;
   const response = await pool.query("SELECT * FROM tags WHERE id = $1", [
     tag_id,
   ]);

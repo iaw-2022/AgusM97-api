@@ -22,7 +22,7 @@ const getUserByUsername = async (req, res) => {
     [username]
   );
   if (response.rows.length == 0) res.status(404).send("User not found");
-  res.json(response.rows[0]);
+  else res.json(response.rows[0]);
 };
 
 const getUserById = async (req, res) => {
@@ -32,7 +32,7 @@ const getUserById = async (req, res) => {
     [id]
   );
   if (response.rows.length == 0) res.status(404).send("User not found");
-  res.json(response.rows[0]);
+  else res.json(response.rows[0]);
 };
 
 const getUserByEmail = async (req, res) => {
@@ -42,7 +42,7 @@ const getUserByEmail = async (req, res) => {
     [email]
   );
   if (response.rows.length == 0) res.status(404).send("User not found");
-  res.json(response.rows[0]);
+  else res.json(response.rows[0]);
 };
 
 const updateUserEmail = async (req, res) => {
@@ -53,13 +53,15 @@ const updateUserEmail = async (req, res) => {
     username,
   ]);
   if (response.rows.length == 0) res.status(404).send("User not found");
-  await pool.query(
-    "UPDATE users SET email = $1, updated_at = $2 WHERE username = $3",
-    [email, now, username]
-  );
-  res.json({
-    message: "User Email Updated Succefully",
-  });
+  else {
+    await pool.query(
+      "UPDATE users SET email = $1, updated_at = $2 WHERE username = $3",
+      [email, now, username]
+    );
+    res.json({
+      message: "User Email Updated Succefully",
+    });
+  }
 };
 
 const updateUserBio = async (req, res) => {
@@ -70,13 +72,15 @@ const updateUserBio = async (req, res) => {
     username,
   ]);
   if (response.rows.length == 0) res.status(404).send("User not found");
-  await pool.query(
-    "UPDATE users SET bio = $1, updated_at = $2 WHERE username = $3",
-    [bio, now, username]
-  );
-  res.json({
-    message: "User Bio Updated Succefully",
-  });
+  else {
+    await pool.query(
+      "UPDATE users SET bio = $1, updated_at = $2 WHERE username = $3",
+      [bio, now, username]
+    );
+    res.json({
+      message: "User Bio Updated Succefully",
+    });
+  }
 };
 
 const updateUserPicture = async (req, res) => {
@@ -87,13 +91,15 @@ const updateUserPicture = async (req, res) => {
     username,
   ]);
   if (response.rows.length == 0) res.status(404).send("User not found");
-  await pool.query(
-    "UPDATE users SET picture = $1, updated_at = $2 WHERE username = $3",
-    [picture, now, username]
-  );
-  res.json({
-    message: "User Picture Updated Succefully",
-  });
+  else {
+    await pool.query(
+      "UPDATE users SET picture = $1, updated_at = $2 WHERE username = $3",
+      [picture, now, username]
+    );
+    res.json({
+      message: "User Picture Updated Succefully",
+    });
+  }
 };
 
 const createUser = async (req, res) => {
@@ -120,15 +126,27 @@ const deleteUser = async (req, res) => {
     username,
   ]);
   if (response.rows.length == 0) res.status(404).send("User not found");
-  await pool.query("DELETE FROM users WHERE username = $1", [username]);
-  res.json(`User ${username} Deleted Succesfully`);
+  else {
+    await pool.query("DELETE FROM users WHERE username = $1", [username]);
+    res.json(`User ${username} Deleted Succesfully`);
+  }
 };
 
 //--MIDDLEWARE--
-const userExists = async (req, res, next) => {
+const userExistsBody = async (req, res, next) => {
   const user_id = req.body.user_id;
   const response = await pool.query("SELECT * FROM users WHERE id = $1", [
     user_id,
+  ]);
+  if (response.rows.length == 0)
+    res.status(404).send("This users doesn't exists");
+  else next();
+};
+
+const userExistsParam = async (req, res, next) => {
+  const username = req.params.username;
+  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
+    username,
   ]);
   if (response.rows.length == 0)
     res.status(404).send("This users doesn't exists");
@@ -179,7 +197,8 @@ module.exports = {
   updateUserPicture,
   createUser,
   deleteUser,
-  userExists,
+  userExistsBody,
+  userExistsParam,
   usernameTaken,
   emailTaken,
   passwordTaken,
