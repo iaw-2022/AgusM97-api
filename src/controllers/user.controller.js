@@ -165,9 +165,11 @@ const usernameTaken = async (req, res, next) => {
 
 const emailTaken = async (req, res, next) => {
   const email = req.body.email;
-  const response = await pool.query("SELECT * FROM users WHERE email = $1", [
-    email,
-  ]);
+  const username = req.params.username;
+  const response = await pool.query(
+    "SELECT * FROM users WHERE email = $1 AND username != $2",
+    [email, username]
+  );
   if (response.rows.length != 0)
     res
       .status(409)
