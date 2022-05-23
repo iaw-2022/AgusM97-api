@@ -49,13 +49,13 @@ router.get(
 );
 router.patch("/image/:id/description", imageController.updateImageDescription);
 router.post(
-  "/image/:image_id/tags.add/:tag_id",
+  "/image/:image_id/tags./:tag_id",
   tagController.tagExists,
   imageController.imageExists,
   imageController.addTagToImage
 );
 router.delete(
-  "/image/:image_id/tags.remove/:tag_id",
+  "/image/:image_id/tags/:tag_id",
   tagController.tagExists,
   imageController.imageExists,
   imageController.removeTagFromImage
@@ -81,13 +81,13 @@ router.get(
   galleryController.getGalleryImages
 );
 router.post(
-  "/gallery/:gallery_id/images.add/:image_id",
+  "/gallery/:gallery_id/images/:image_id",
   galleryController.galleryExists,
   imageController.imageExists,
   galleryController.addImageToGallery
 );
 router.delete(
-  "/gallery/:gallery_id/images.remove/:image_id",
+  "/gallery/:gallery_id/images/:image_id",
   galleryController.galleryExists,
   imageController.imageExists,
   galleryController.removeImageFromGallery
