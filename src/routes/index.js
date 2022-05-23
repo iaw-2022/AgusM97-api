@@ -49,7 +49,7 @@ router.get(
 );
 router.patch("/image/:id/description", imageController.updateImageDescription);
 router.post(
-  "/image/:image_id/tags./:tag_id",
+  "/image/:image_id/tags/:tag_id",
   tagController.tagExists,
   imageController.imageExists,
   imageController.addTagToImage
