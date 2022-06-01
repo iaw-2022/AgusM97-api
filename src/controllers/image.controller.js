@@ -1,5 +1,6 @@
 require("dotenv").config();
 const pool = require("./pgpool");
+const jwt_decode = require("jwt-decode");
 
 const getImages = async (req, res) => {
   const response = await pool.query("SELECT * FROM images");
@@ -98,12 +99,17 @@ const removeTagFromImage = async (req, res) => {
 const uploadImage = async (req, res) => {
   const file = req.body.file;
   const description = req.body.description;
-  const user_id = req.body.user_id;
+  const tokken = jwt_decode(req.header("authorization").replace("Bearer ", ""));
+  const email = tokken[process.env.EMAIL_URL];
+  const response = await pool.query("SELECT id FROM users WHERE email = $1", [
+    email,
+  ]);
+
   const now = new Date();
 
   await pool.query(
     "INSERT INTO images (file, description, user_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $4)",
-    [file, description, user_id, now]
+    [file, description, response.rows[0].id, now]
   );
   res.json({
     message: "Image Uploaded Succefully",

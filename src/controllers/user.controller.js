@@ -45,25 +45,6 @@ const getUserByEmail = async (req, res) => {
   else res.json(response.rows[0]);
 };
 
-const updateUserEmail = async (req, res) => {
-  const username = req.params.username;
-  const email = req.body.email;
-  const now = new Date();
-  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
-    username,
-  ]);
-  if (response.rows.length == 0) res.status(404).send("User not found");
-  else {
-    await pool.query(
-      "UPDATE users SET email = $1, updated_at = $2 WHERE username = $3",
-      [email, now, username]
-    );
-    res.json({
-      message: "User Email Updated Succefully",
-    });
-  }
-};
-
 const updateUserBio = async (req, res) => {
   const username = req.params.username;
   const bio = req.body.bio;
@@ -194,7 +175,6 @@ module.exports = {
   getUserById,
   getUserByUsername,
   getUserByEmail,
-  updateUserEmail,
   updateUserBio,
   updateUserPicture,
   createUser,
