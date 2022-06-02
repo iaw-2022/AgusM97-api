@@ -52,32 +52,6 @@
         }
       }
     },
-    "/user.new": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Create new user",
-        "operationId": "createUser",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Created user parameters",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/New_User"
-            }
-          }
-        ],
-        "responses": {
-          "409": {
-            "description": "Username, password or email are already in use"
-          },
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
     "/user/{username}": {
       "get": {
         "tags": ["user"],
@@ -101,28 +75,6 @@
             "schema": {
               "$ref": "#/definitions/User"
             }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["user"],
-        "summary": "Delete user",
-        "operationId": "deleteUser",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name of the user that needs to be deleted",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "User not found"
-          },
-          "default": {
-            "description": "successful operation"
           }
         }
       }
@@ -181,19 +133,12 @@
         }
       }
     },
-    "/user/{username}/bio": {
+    "/user/bio": {
       "patch": {
         "tags": ["user"],
         "summary": "Update a user's biography",
         "operationId": "updateBio",
         "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name of the user that needs to be updated. ",
-            "required": true,
-            "type": "string"
-          },
           {
             "in": "body",
             "name": "body",
@@ -204,9 +149,10 @@
             }
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "404": {
-            "description": "User not found"
+          "401": {
+            "description": "Access unauthorized"
           },
           "default": {
             "description": "successful operation"
@@ -214,19 +160,12 @@
         }
       }
     },
-    "/user/{username}/picture": {
+    "/user/picture": {
       "patch": {
         "tags": ["user"],
         "summary": "Update a user's profile picture",
         "operationId": "updatePic",
         "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name of the user that needs to be updated. ",
-            "required": true,
-            "type": "string"
-          },
           {
             "in": "body",
             "name": "body",
@@ -237,9 +176,10 @@
             }
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "404": {
-            "description": "User not found"
+          "401": {
+            "description": "Access unauthorized"
           },
           "default": {
             "description": "successful operation"
@@ -726,6 +666,13 @@
       }
     }
   },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "AccessToken"
+    }
+  },
   "definitions": {
     "All_Users": {
       "type": "array",
@@ -737,20 +684,6 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/User_Compact"
-      }
-    },
-    "New_User": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        }
       }
     },
     "User_Compact": {
@@ -783,6 +716,10 @@
           "type": "string",
           "description": "Profile picture, encoded in base64"
         },
+        "bio": {
+          "type": "string",
+          "description": "Profile picture, encoded in base64"
+        },
         "created_at": {
           "type": "string",
           "format": "date-time",
@@ -792,14 +729,6 @@
           "type": "string",
           "format": "date-time",
           "description": "Timestamp without time zone"
-        }
-      }
-    },
-    "Email": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
         }
       }
     },
