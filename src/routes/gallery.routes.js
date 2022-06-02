@@ -41,12 +41,7 @@ router.delete(
   galleryController.removeImageFromGallery
 );
 
-router.post(
-  "/gallery.new",
-  checkJwt,
-  userController.userExistsBody,
-  galleryController.createGallery
-);
+router.post("/gallery.new", checkJwt, galleryController.createGallery);
 
 router.delete(
   "/gallery/:gallery_id",
