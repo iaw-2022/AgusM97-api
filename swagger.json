@@ -20,7 +20,7 @@
       "name": "gallery"
     }
   ],
-  "schemes": ["http", "https"],
+  "schemes": ["https"],
   "paths": {
     "/users": {
       "get": {
@@ -772,7 +772,7 @@
     "Picture": {
       "type": "object",
       "properties": {
-        "bio": {
+        "picture": {
           "type": "string"
         }
       }
