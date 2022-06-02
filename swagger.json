@@ -670,7 +670,7 @@
     "bearerAuth": {
       "type": "apiKey",
       "in": "header",
-      "name": "AccessToken"
+      "name": "authorization"
     }
   },
   "definitions": {
