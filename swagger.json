@@ -932,21 +932,8 @@
     "New_Gallery": {
       "type": "object",
       "properties": {
-        "user_id": {
-          "type": "integer"
-        },
         "name": {
           "type": "string"
-        },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp without time zone"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp without time zone"
         }
       }
     },
