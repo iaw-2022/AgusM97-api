@@ -76,7 +76,7 @@ const removeImageFromGallery = async (req, res) => {
 
 const createGallery = async (req, res) => {
   const name = req.body.name;
-  const user_id = getIdFromToken(req);
+  const user_id = await getIdFromToken(req);
   const now = new Date();
 
   await pool.query(
