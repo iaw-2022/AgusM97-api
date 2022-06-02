@@ -1,5 +1,6 @@
 require("dotenv").config();
 const pool = require("./pgpool");
+const { getIdFromToken } = require("./user.controller");
 
 const getGalleries = async (req, res) => {
   const response = await pool.query("SELECT * FROM galleries");
@@ -7,7 +8,7 @@ const getGalleries = async (req, res) => {
 };
 
 const getGalleryById = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.gallery_id;
   const response = await pool.query("SELECT * FROM galleries WHERE id = $1", [
     id,
   ]);
@@ -88,7 +89,7 @@ const createGallery = async (req, res) => {
 };
 
 const deleteGallery = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.gallery_id;
   const response = await pool.query("SELECT * FROM galleries WHERE id = $1", [
     id,
   ]);
@@ -110,6 +111,18 @@ const galleryExists = async (req, res, next) => {
   else next();
 };
 
+const galleryBelongsToUser = async (req, res, next) => {
+  const gallery_id = req.params.gallery_id;
+  const user_id = await getIdFromToken(req);
+  const response = await pool.query(
+    "SELECT * FROM galleries WHERE id = $1 AND user_id = $2",
+    [gallery_id, user_id]
+  );
+  if (response.rows.length == 0)
+    res.status(409).send("You can't modify this gallery");
+  else next();
+};
+
 module.exports = {
   getGalleries,
   getGalleryById,
@@ -120,4 +133,5 @@ module.exports = {
   createGallery,
   deleteGallery,
   galleryExists,
+  galleryBelongsToUser,
 };

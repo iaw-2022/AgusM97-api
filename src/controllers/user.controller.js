@@ -1,7 +1,7 @@
 require("dotenv").config();
 const pool = require("./pgpool");
 const bcrypt = require("bcrypt");
-const req = require("express/lib/request");
+const jwt_decode = require("jwt-decode");
 
 const getUsers = async (req, res) => {
   const response = await pool.query(
@@ -26,7 +26,7 @@ const getUserByUsername = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.user_id;
   const response = await pool.query(
     "SELECT id, username, email, picture, bio, created_at, updated_at  FROM users WHERE id = $1",
     [id]
@@ -46,41 +46,31 @@ const getUserByEmail = async (req, res) => {
 };
 
 const updateUserBio = async (req, res) => {
-  const username = req.params.username;
   const bio = req.body.bio;
   const now = new Date();
-  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
-    username,
+  const user_id = await getIdFromToken(req);
+
+  await pool.query("UPDATE users SET bio = $1, updated_at = $2 WHERE id = $3", [
+    bio,
+    now,
+    user_id,
   ]);
-  if (response.rows.length == 0) res.status(404).send("User not found");
-  else {
-    await pool.query(
-      "UPDATE users SET bio = $1, updated_at = $2 WHERE username = $3",
-      [bio, now, username]
-    );
-    res.json({
-      message: "User Bio Updated Succefully",
-    });
-  }
+  res.json({
+    message: "User Bio Updated Succefully",
+  });
 };
 
 const updateUserPicture = async (req, res) => {
-  const username = req.params.username;
   const picture = req.body.picture;
   const now = new Date();
-  const response = await pool.query("SELECT * FROM users WHERE username = $1", [
-    username,
-  ]);
-  if (response.rows.length == 0) res.status(404).send("User not found");
-  else {
-    await pool.query(
-      "UPDATE users SET picture = $1, updated_at = $2 WHERE username = $3",
-      [picture, now, username]
-    );
-    res.json({
-      message: "User Picture Updated Succefully",
-    });
-  }
+  const user_id = await getIdFromToken(req);
+  await pool.query(
+    "UPDATE users SET picture = $1, updated_at = $2 WHERE id = $3",
+    [picture, now, user_id]
+  );
+  res.json({
+    message: "User Picture Updated Succefully",
+  });
 };
 
 const createUser = async (req, res) => {
@@ -169,6 +159,16 @@ const passwordTaken = async (req, res, next) => {
   next();
 };
 
+//--UTILS--
+const getIdFromToken = async (req) => {
+  const tokken = jwt_decode(req.header("authorization").replace("Bearer ", ""));
+  const email = tokken[process.env.EMAIL_URL];
+  const response = await pool.query("SELECT id FROM users WHERE email = $1", [
+    email,
+  ]);
+  return response.rows[0].id;
+};
+
 module.exports = {
   getUsers,
   getUsersCompact,
@@ -184,4 +184,5 @@ module.exports = {
   usernameTaken,
   emailTaken,
   passwordTaken,
+  getIdFromToken,
 };
