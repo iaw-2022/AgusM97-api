@@ -127,10 +127,8 @@ const imageExists = async (req, res, next) => {
 };
 
 const imageBelongsToUser = async (req, res, next) => {
-  console.log("--------1--------");
   const image_id = req.params.image_id;
   const user_id = await getIdFromToken(req);
-  console.log("--------2--------");
   const response = await pool.query(
     "SELECT * FROM images WHERE id = $1 AND user_id = $2",
     [image_id, user_id]

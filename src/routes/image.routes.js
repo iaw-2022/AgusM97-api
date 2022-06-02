@@ -53,6 +53,11 @@ router.delete(
 
 router.post("/image.new", checkJwt, imageController.uploadImage);
 
-router.delete("/image/:image_id", checkJwt, imageController.deleteImage);
+router.delete(
+  "/image/:image_id",
+  checkJwt,
+  imageController.imageBelongsToUser,
+  imageController.deleteImage
+);
 
 module.exports = router;
