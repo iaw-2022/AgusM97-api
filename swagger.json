@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "title": "Proyecto Servicio Web | IAW"
   },
+  "host": "proyecto-api-agusm97.herokuapp.com",
   "tags": [
     {
       "name": "user"
@@ -19,7 +20,7 @@
       "name": "gallery"
     }
   ],
-  "schemes": ["https"],
+  "schemes": ["http", "https"],
   "paths": {
     "/users": {
       "get": {
