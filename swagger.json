@@ -169,7 +169,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "New picture",
+            "description": "New picture encoded in base64",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Picture"
@@ -302,9 +302,10 @@
             }
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
-          "404": {
-            "description": "User not found"
+          "401": {
+            "description": "Access unauthorized"
           },
           "default": {
             "description": "successful operation"
@@ -351,7 +352,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image not found"
           },
@@ -438,7 +443,11 @@
             }
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image not found"
           },
@@ -469,7 +478,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image or tag not found"
           },
@@ -501,7 +514,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image or tag not found, or tag isn't associated to image"
           },
@@ -565,7 +582,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Gallery not found"
           },
@@ -623,7 +644,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image or gallery not found"
           },
@@ -655,7 +680,11 @@
             "type": "string"
           }
         ],
+        "security": [{ "bearerAuth": [] }],
         "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
           "404": {
             "description": "Image or gallery not found, or image isn't associated to gallery"
           },
@@ -785,7 +814,8 @@
           "type": "integer"
         },
         "file": {
-          "type": "string"
+          "type": "string",
+          "description": "Picture encoded in base64"
         },
         "description": {
           "type": "string"
@@ -819,14 +849,12 @@
     "New_Image": {
       "type": "object",
       "properties": {
-        "user_id": {
-          "type": "string"
-        },
         "description": {
           "type": "string"
         },
         "file": {
-          "type": "string"
+          "type": "string",
+          "description": "Picture encoded in base64"
         }
       }
     },
