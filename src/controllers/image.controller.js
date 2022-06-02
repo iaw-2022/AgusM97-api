@@ -40,7 +40,7 @@ const getImagesByUsername = async (req, res) => {
 };
 
 const updateImageDescription = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.image_id;
   const description = req.body.description;
   const now = new Date();
   await pool.query(

@@ -596,6 +596,33 @@
         }
       }
     },
+    "/gallery.new": {
+      "post": {
+        "tags": ["gallery"],
+        "summary": "Create new gallery",
+        "operationId": "createGallery",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "new gallery parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/New_Gallery"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
     "/user/{username}/galleries": {
       "get": {
         "tags": ["gallery"],
