@@ -10,6 +10,8 @@ const port = process.env.PORT;
 // middlewares
 app.use(express.json());
 
+app.use(cors());
+
 //routes
 app.use(require("./routes/user.routes"));
 app.use(require("./routes/tag.routes"));
@@ -17,14 +19,5 @@ app.use(require("./routes/image.routes"));
 app.use(require("./routes/gallery.routes"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-app.use(
-  cors({
-    origin: [
-      "http://localhost:8080",
-      "https://proyecto-vue-agusm97.herokuapp.com/",
-    ],
-  })
-);
 
 app.listen(port, () => console.log("Server listening on port: ", port));
