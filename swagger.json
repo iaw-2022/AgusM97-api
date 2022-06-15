@@ -1,0 +1,947 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Proyecto Servicio Web | IAW"
+  },
+  "host": "proyecto-api-agusm97.herokuapp.com",
+  "tags": [
+    {
+      "name": "user"
+    },
+    {
+      "name": "tag"
+    },
+    {
+      "name": "image"
+    },
+    {
+      "name": "gallery"
+    }
+  ],
+  "schemes": ["https"],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all users",
+        "operationId": "getUsers",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Users"
+            }
+          }
+        }
+      }
+    },
+    "/users.compact": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all users in compact format",
+        "operationId": "getUsersCompact",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Users_Compact"
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by username",
+        "operationId": "getUserByName",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/user/id/{id}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by id",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/user/email/{email}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by email",
+        "operationId": "getUserByEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "The email of the user that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/user/bio": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update a user's biography",
+        "operationId": "updateBio",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New bio",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Bio"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/picture": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update a user's profile picture",
+        "operationId": "updatePic",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New picture encoded in base64",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Picture"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": ["tag"],
+        "summary": "Get all tags",
+        "operationId": "getTags",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Tags"
+            }
+          }
+        }
+      }
+    },
+    "/tag/{name}": {
+      "get": {
+        "tags": ["tag"],
+        "summary": "Get tag by name",
+        "operationId": "getTagByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "The name of the tag that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Tag not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Tag"
+            }
+          }
+        }
+      }
+    },
+    "/tag/id/{id}": {
+      "get": {
+        "tags": ["tag"],
+        "summary": "Get tag by id",
+        "operationId": "getTagById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the tag that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Tag not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Tag"
+            }
+          }
+        }
+      }
+    },
+    "/images": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get all images",
+        "operationId": "getImage",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Images"
+            }
+          }
+        }
+      }
+    },
+    "/images.compact": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get all images in compact format",
+        "operationId": "getImagesCompact",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Images_Compact"
+            }
+          }
+        }
+      }
+    },
+    "/image.new": {
+      "post": {
+        "tags": ["image"],
+        "summary": "Upload new image",
+        "operationId": "uploadImage",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Uploaded image parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/New_Image"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/image/{id}": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get image by id",
+        "operationId": "getImageById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the image that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Image"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["image"],
+        "summary": "Delete image",
+        "operationId": "deleteImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the image that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/image/{id}/tags": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get image tags",
+        "operationId": "getImageTags",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the image that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Image not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Tags"
+            }
+          }
+        }
+      }
+    },
+    "/user/{username}/images": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get all images by uploader's username",
+        "operationId": "getImageByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Images"
+            }
+          }
+        }
+      }
+    },
+    "/image/{id}/description": {
+      "patch": {
+        "tags": ["image"],
+        "summary": "Update an image's description",
+        "operationId": "updateDescription",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the image that needs to be updated. ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New description",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Description"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image not found"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/image/{image_id}/tags/{tag_id}": {
+      "post": {
+        "tags": ["image"],
+        "summary": "Add tag to image",
+        "operationId": "addTag",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "description": "The id of the image that needs to be updated. ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tag_id",
+            "in": "path",
+            "description": "The id of the tag to add. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image or tag not found"
+          },
+          "409": {
+            "description": "Image is already associated to this tag"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["image"],
+        "summary": "Remove tag from image",
+        "operationId": "removeTag",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "description": "The id of the image that needs to be updated. ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "tag_id",
+            "in": "path",
+            "description": "The id of the tag to remove. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image or tag not found, or tag isn't associated to image"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/galleries": {
+      "get": {
+        "tags": ["gallery"],
+        "summary": "Get all galleries",
+        "operationId": "getGalleries",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Galleries"
+            }
+          }
+        }
+      }
+    },
+    "/gallery/{id}": {
+      "get": {
+        "tags": ["gallery"],
+        "summary": "Get gallery by id",
+        "operationId": "getGalleryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the gallery that needs to be fetched. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Gallery not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Gallery"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["gallery"],
+        "summary": "Delete gallery",
+        "operationId": "deleteGallery",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the gallery that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Gallery not found"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/gallery.new": {
+      "post": {
+        "tags": ["gallery"],
+        "summary": "Create new gallery",
+        "operationId": "createGallery",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "new gallery parameters",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/New_Gallery"
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/{username}/galleries": {
+      "get": {
+        "tags": ["gallery"],
+        "summary": "Get all galleries by owner's username",
+        "operationId": "getGalleriesByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Galleries"
+            }
+          }
+        }
+      }
+    },
+    "/gallery/{gallery_id}/images/{image_id}": {
+      "post": {
+        "tags": ["gallery"],
+        "summary": "Add image to gallery",
+        "operationId": "addImage",
+        "parameters": [
+          {
+            "name": "gallery_id",
+            "in": "path",
+            "description": "The id of the gallery that needs to be updated. ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "description": "The id of the image to add. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image or gallery not found"
+          },
+          "409": {
+            "description": "Image is already associated to this gallery"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["gallery"],
+        "summary": "Remove tag from image",
+        "operationId": "removeImage",
+        "parameters": [
+          {
+            "name": "gallery_id",
+            "in": "path",
+            "description": "The id of the gallery that needs to be updated. ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image_id",
+            "in": "path",
+            "description": "The id of the image to remove. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Access unauthorized"
+          },
+          "404": {
+            "description": "Image or gallery not found, or image isn't associated to gallery"
+          },
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "authorization"
+    }
+  },
+  "definitions": {
+    "All_Users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/User"
+      }
+    },
+    "All_Users_Compact": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/User_Compact"
+      }
+    },
+    "User_Compact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string",
+          "description": "Profile picture, encoded in base64"
+        },
+        "bio": {
+          "type": "string",
+          "description": "Profile picture, encoded in base64"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        }
+      }
+    },
+    "Bio": {
+      "type": "object",
+      "properties": {
+        "bio": {
+          "type": "string"
+        }
+      }
+    },
+    "Picture": {
+      "type": "object",
+      "properties": {
+        "picture": {
+          "type": "string"
+        }
+      }
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        }
+      }
+    },
+    "All_Tags": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Tag"
+      }
+    },
+    "Image": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "file": {
+          "type": "string",
+          "description": "Picture encoded in base64"
+        },
+        "description": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        }
+      }
+    },
+    "Image_Compact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "New_Image": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string",
+          "description": "Picture encoded in base64"
+        }
+      }
+    },
+    "All_Images": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Image"
+      }
+    },
+    "All_Images_Compact": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Image_Compact"
+      }
+    },
+    "Description": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Gallery": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "user_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp without time zone"
+        }
+      }
+    },
+    "New_Gallery": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "All_Galleries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Gallery"
+      }
+    }
+  }
+}
