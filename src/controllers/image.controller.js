@@ -33,7 +33,7 @@ const getImageTags = async (req, res) => {
 const getImagesByTag = async (req, res) => {
   const id = req.params.tag_id;
   const response = await pool.query(
-    "SELECT images.id, user_id, file, description, images.created_at, images.updated_at FROM image_tag JOIN images ON tag_id = tags.id WHERE tag_id = $1",
+    "SELECT images.id, user_id, file, description, images.created_at, images.updated_at FROM image_tag JOIN images ON image_id = images.id WHERE tag_id = $1",
     [id]
   );
   res.json(response.rows);
