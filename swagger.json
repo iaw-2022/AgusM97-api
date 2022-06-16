@@ -393,6 +393,21 @@
         }
       }
     },
+    "/image.random": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get a random image",
+        "operationId": "getRandomImage",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Image"
+            }
+          }
+        }
+      }
+    },
     "/image/{id}/tags": {
       "get": {
         "tags": ["image"],
@@ -673,6 +688,21 @@
           },
           "default": {
             "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/gallery.random": {
+      "get": {
+        "tags": ["gallery"],
+        "summary": "Get a random gallery",
+        "operationId": "getRandomGallery",
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Gallery"
+            }
           }
         }
       }

@@ -11,6 +11,8 @@ router.get("/galleries", galleryController.getGalleries);
 
 router.get("/gallery/:gallery_id", galleryController.getGalleryById);
 
+router.get("/gallery.random", galleryController.getRandomGallery);
+
 router.get(
   "/user/:username/galleries",
   userController.userExistsParam,

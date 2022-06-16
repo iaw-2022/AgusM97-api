@@ -14,6 +14,13 @@ const getImagesCompact = async (req, res) => {
   res.json(response.rows);
 };
 
+const getRandomImage = async (req, res) => {
+  const response = await pool.query(
+    "SELECT * FROM images ORDER BY RANDOM() LIMIT 1"
+  );
+  res.json(response.rows[0]);
+};
+
 const getImageById = async (req, res) => {
   const id = req.params.image_id;
   const response = await pool.query("SELECT * FROM images WHERE id = $1", [id]);
@@ -150,6 +157,7 @@ const imageBelongsToUser = async (req, res, next) => {
 module.exports = {
   getImages,
   getImagesCompact,
+  getRandomImage,
   getImageById,
   getImageTags,
   getImagesByTag,

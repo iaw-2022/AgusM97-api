@@ -25,6 +25,13 @@ const getGalleriesByUsername = async (req, res) => {
   res.json(response.rows);
 };
 
+const getRandomGallery = async (req, res) => {
+  const response = await pool.query(
+    "SELECT * FROM galleries ORDER BY RANDOM() LIMIT 1"
+  );
+  res.json(response.rows[0]);
+};
+
 const getGalleryImages = async (req, res) => {
   const id = req.params.gallery_id;
   const response = await pool.query(
@@ -135,6 +142,7 @@ const galleryBelongsToUser = async (req, res, next) => {
 module.exports = {
   getGalleries,
   getGalleryById,
+  getRandomGallery,
   getGalleriesByUsername,
   getGalleryImages,
   getGalleriesWithImage,

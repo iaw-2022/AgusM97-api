@@ -13,6 +13,8 @@ router.get("/images.compact", imageController.getImagesCompact);
 
 router.get("/image/:image_id", imageController.getImageById);
 
+router.get("/image.random", imageController.getRandomImage);
+
 router.get(
   "/image/:image_id/tags",
   imageController.imageExists,
