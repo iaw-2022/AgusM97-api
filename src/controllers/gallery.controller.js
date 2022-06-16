@@ -34,6 +34,15 @@ const getGalleryImages = async (req, res) => {
   res.json(response.rows);
 };
 
+const getGalleriesWithImage = async (req, res) => {
+  const id = req.params.image_id;
+  const response = await pool.query(
+    "SELECT galleries.id, name, user_id, galleries.created_at, galleries.updated_at FROM gallery_image JOIN galleries ON gallery_id = galleries.id WHERE image_id = $1",
+    [id]
+  );
+  res.json(response.rows);
+};
+
 const addImageToGallery = async (req, res) => {
   const gallery_id = req.params.gallery_id;
   const image_id = req.params.image_id;
@@ -128,6 +137,7 @@ module.exports = {
   getGalleryById,
   getGalleriesByUsername,
   getGalleryImages,
+  getGalleriesWithImage,
   addImageToGallery,
   removeImageFromGallery,
   createGallery,

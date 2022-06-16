@@ -18,6 +18,12 @@ router.get(
 );
 
 router.get(
+  "/image/:image_id/galleries",
+  imageController.imageExists,
+  galleryController.getGalleriesWithImage
+);
+
+router.get(
   "/gallery/:gallery_id/images",
   galleryController.galleryExists,
   galleryController.getGalleryImages

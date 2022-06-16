@@ -20,6 +20,12 @@ router.get(
 );
 
 router.get(
+  "/tag/:tag_id/images",
+  tagController.tagExists,
+  imageController.getImagesByTag
+);
+
+router.get(
   "/user/:username/images",
   userController.userExistsParam,
   imageController.getImagesByUsername

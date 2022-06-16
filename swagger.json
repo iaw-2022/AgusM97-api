@@ -187,6 +187,33 @@
         }
       }
     },
+    "/user/{username}/galleries": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all galleries by owner's username",
+        "operationId": "getGalleriesByUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "User not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Galleries"
+            }
+          }
+        }
+      }
+    },
     "/tags": {
       "get": {
         "tags": ["tag"],
@@ -388,6 +415,60 @@
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/All_Tags"
+            }
+          }
+        }
+      }
+    },
+    "/tag/{id}/images": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get images by tag",
+        "operationId": "getImagesByTag",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the tag.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Tag not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Tags"
+            }
+          }
+        }
+      }
+    },
+    "/image/{id}/galleries": {
+      "get": {
+        "tags": ["image"],
+        "summary": "Get all galleries that contain the image",
+        "operationId": "getGalleriesWithImage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the image.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "image not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Galleries"
             }
           }
         }
@@ -596,6 +677,33 @@
         }
       }
     },
+    "/gallery/{id}/images": {
+      "get": {
+        "tags": ["gallery"],
+        "summary": "Get all images in gallery",
+        "operationId": "getImageInGallery",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the gallery.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Gallery not found"
+          },
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/All_Images"
+            }
+          }
+        }
+      }
+    },
     "/gallery.new": {
       "post": {
         "tags": ["gallery"],
@@ -619,33 +727,6 @@
           },
           "default": {
             "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/{username}/galleries": {
-      "get": {
-        "tags": ["gallery"],
-        "summary": "Get all galleries by owner's username",
-        "operationId": "getGalleriesByUsername",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name of the user.",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "404": {
-            "description": "User not found"
-          },
-          "default": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/All_Galleries"
-            }
           }
         }
       }

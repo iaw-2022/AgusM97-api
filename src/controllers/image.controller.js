@@ -30,6 +30,15 @@ const getImageTags = async (req, res) => {
   res.json(response.rows);
 };
 
+const getImagesByTag = async (req, res) => {
+  const id = req.params.tag_id;
+  const response = await pool.query(
+    "SELECT images.id, user_id, file, description, images.created_at, images.updated_at FROM image_tag JOIN images ON tag_id = tags.id WHERE tag_id = $1",
+    [id]
+  );
+  res.json(response.rows);
+};
+
 const getImagesByUsername = async (req, res) => {
   const username = req.params.username;
   const response = await pool.query(
@@ -143,6 +152,7 @@ module.exports = {
   getImagesCompact,
   getImageById,
   getImageTags,
+  getImagesByTag,
   getImagesByUsername,
   updateImageDescription,
   addTagToImage,
